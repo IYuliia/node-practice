@@ -1,5 +1,5 @@
 import { program } from "commander";
-import { createFile, getFiles, getFileContent } from "./files.js";
+import { createFile, getFiles, getFileInfo } from "./files.js";
 
 program
   .option("-a, --action <type>", "choose action")
@@ -21,7 +21,7 @@ async function invokeAction({ action, fileName, content }) {
       break;
 
     case "getContent":
-      getFileContent(fileName);
+      getFileInfo(fileName);
       break;
 
     default:

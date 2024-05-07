@@ -27,19 +27,30 @@ export async function getFiles() {
   if (dir.length === 0) {
     console.log("Folder is empty!");
   } else {
-    dir.forEach((file) => console.log(file));
+    dir.forEach( async (file) => {
+        const fullPath = path.resolve(pathFolder, file);
+        const stats = await fs.stat(fullPath);
+        console.log({ 
+            Name: file,
+            Extention: path.extname(file),
+        });
+    });
   }
-}
+  }
 
-export async function getFileContent(fileName) {
+export async function getFileInfo(fileName) {
   try {
     const dir = await fs.readdir(pathFolder);
     if (!dir.includes(fileName)) {
       console.log("File is not found");
     } else {
       const filePath = path.resolve("files", fileName);
-      const content = await fs.readFile(filePath, "utf-8");
-      console.log(content);
+      const stats = await fs.stat(filePath);
+      console.log({
+        Content: await fs.readFile(filePath, "utf-8"),
+        Size: stats.size,
+        CreatedAt: stats.mtime,
+      });
     }
   } catch (error) {
     console.log(error);
